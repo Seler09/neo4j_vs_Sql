@@ -51,7 +51,7 @@ def rate_read(tx, file_name_number):
 
 
 with driver.session() as session:
-      #session.write_transaction(title_read, path_for_movies)
+      session.write_transaction(title_read, path_for_movies)
       for val in range(1, numbers_of_ratings+1):
         session.write_transaction(rate_read, str(val).zfill(5))
       session.close()
