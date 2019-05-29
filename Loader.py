@@ -41,7 +41,7 @@ def title_read(tx, path):
 
 def rate_read(tx, file_name_number):
     file_name_number2 = "17767"
-    file2 = open(path_for_training_sets+"\mv_00" + file_name_number2 + ".txt", "r")
+    file2 = open(path_for_training_sets+"\mv_00" + file_name_number + ".txt", "r")
     id_movie = int(re.search(r'\d+', file2.readline()).group())
 
     for line in file2:
@@ -52,7 +52,7 @@ def rate_read(tx, file_name_number):
 
 with driver.session() as session:
       #session.write_transaction(title_read, path_for_movies)
-     # for val in range(1, numbers_of_ratings+1):
-      session.write_transaction(rate_read, str(1).zfill(5))
+      for val in range(1, numbers_of_ratings+1):
+        session.write_transaction(rate_read, str(val).zfill(5))
       session.close()
 
