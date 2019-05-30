@@ -19,6 +19,8 @@ def create_user_rating(db, movie, rating):
     query = """
         MATCH (m:Movie)
         WHERE m.id = $id
+        MATCH (u:User)
+        WHERE u.id = $user_id1
         CREATE (u)-[r:Rating {value: $value, date: date($date)}]->(m)
     """
-    db.run(query, id=movie['id'], **rating)
+    db.run(query, id=movie['id'], user_id1=rating['user_id'], **rating)

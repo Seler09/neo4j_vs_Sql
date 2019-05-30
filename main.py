@@ -1,7 +1,7 @@
 import argparse
 
 import graph
-import parser
+import temp_parser
 
 
 def parse_args():
@@ -15,7 +15,7 @@ def parse_args():
         help='Database username'
     )
     p.add_argument(
-        '--password', default='neo4j',
+        '--password', default='bartek',
         help='Database password'
     )
     p.add_argument(
@@ -34,13 +34,13 @@ if __name__ == '__main__':
     driver = graph.get_db(
         args.db_uri, args.username, args.password
     )
-    with parser.open_movies(args.dataset_path) as f:
+    with temp_parser.open_movies(args.dataset_path) as f:
         for line in f:
-            movie = parser.parse_movie(line)
+            movie = temp_parser.parse_movie(line)
             print(f'Creating movie in DB: {movie!r}')
             with driver.session() as db:
                 graph.create_movie(db, movie)
-                ratings = parser.get_ratings(movie['id'], args.dataset_path)
+                ratings = temp_parser.get_ratings(movie['id'], args.dataset_path)
                 if args.max_ratings:
                     ratings = ratings[:args.max_ratings]
                 for r in ratings:
