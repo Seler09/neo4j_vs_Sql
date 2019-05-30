@@ -7,7 +7,7 @@ def get_db(uri, username, password):
 
 def create_movie(db, movie):
     query = """
-        CREATE (m:Movie {id: $id, year: $year, title: $title})
+        MERGE (m:Movie {id: $id, year: $year, title: $title})
     """
     db.run(query, **movie)
 
