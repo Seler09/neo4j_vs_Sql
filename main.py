@@ -34,7 +34,9 @@ if __name__ == '__main__':
         for line in f:
             movie = parser.parse_movie(line)
             print(f'Creating movie in DB: {movie!r}')
-            graph.create_movie(db, movie)
+            tx = db.begin_transaction()
+            graph.create_movie(tx, movie)
             ratings = parser.get_ratings(movie['id'], args.dataset_path)
             for r in ratings:
-                graph.create_user_rating(db, movie, r)
+                graph.create_user_rating(tx, movie, r)
+            tx.commit()
