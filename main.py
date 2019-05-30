@@ -22,6 +22,10 @@ def parse_args():
         '--dataset-path', default='../dataset',
         help='Path to dataset'
     )
+    p.add_argument(
+        '--max-ratings', type=int,
+        help='Max number of ratings per movie'
+    )
     return p.parse_args()
 
 
@@ -37,5 +41,7 @@ if __name__ == '__main__':
             with driver.session() as db:
                 graph.create_movie(db, movie)
                 ratings = parser.get_ratings(movie['id'], args.dataset_path)
+                if args.max_ratings:
+                    ratings = ratings[:args.max_ratings]
                 for r in ratings:
                     graph.create_user_rating(db, movie, r)
