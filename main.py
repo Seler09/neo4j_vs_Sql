@@ -1,4 +1,5 @@
 import argparse
+from datetime import datetime
 
 import graph
 import parser
@@ -36,6 +37,7 @@ if __name__ == '__main__':
     )
     with parser.open_movies(args.dataset_path) as f:
         for line in f:
+            start = datetime.now()
             movie = parser.parse_movie(line)
             print(f'Creating movie in DB: {movie!r}')
             with driver.session() as db:
@@ -45,3 +47,5 @@ if __name__ == '__main__':
                     ratings = ratings[:args.max_ratings]
                 for r in ratings:
                     graph.create_user_rating(db, movie, r)
+            time = datetime.now() - start
+            print(f'Done in {time.total_seconds()}s')
