@@ -4,6 +4,10 @@ import os
 def parse_rating(line):
     line = line.rstrip('\n')
     user_id, value, date = line.split(',')
+    try:
+        date = date
+    except ValueError:
+        date = None
     return {
         'user_id': int(user_id),
         'value': int(value),
@@ -26,7 +30,7 @@ def parse_movie(line):
     try:
         year = int(year)
     except ValueError:
-        year = None
+        year = 0
     return {
         'id': int(id),
         'year': year,
